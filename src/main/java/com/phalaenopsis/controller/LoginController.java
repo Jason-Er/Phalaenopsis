@@ -15,13 +15,6 @@ import com.phalaenopsis.model.HttpResult;
 public class LoginController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> actionLogin() {
-		logger.info("Invoke action Login");
 		
-		HttpResult status = new HttpResult(0,"OK",null);
-		return new ResponseEntity<HttpResult>(status, HttpStatus.OK);	
-	}
 	
 }
