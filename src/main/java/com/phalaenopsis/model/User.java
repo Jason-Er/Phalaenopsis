@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class User {
 
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	@Column(name="SSO_ID", unique=true, nullable=false)
 	private String ssoId;
@@ -45,11 +45,11 @@ public class User {
              inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
 	private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -113,7 +113,7 @@ public class User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = (int) (prime * result + id);
 		result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
 		return result;
 	}
