@@ -1,30 +1,32 @@
 package com.phalaenopsis.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
-public class User {
-
+public class Play{	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@OneToMany(mappedBy = "play", cascade = CascadeType.ALL)
+	private List<Scene> scenes;
+	
 	private String name;
-	private String email;
 
-	protected User() {
+	public List<Scene> getScenes() {
+		return scenes;
 	}
 
-	public User(String name, String email) {
-		this.name = name;
-		this.email = email;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("User[id=%d, name='%s', email='%s']", id, name, email);
+	public void setScenes(List<Scene> scenes) {
+		this.scenes = scenes;
 	}
 
 	public String getName() {
@@ -34,13 +36,6 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
+	
+	
 }

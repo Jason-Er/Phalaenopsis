@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.phalaenopsis.model.User;
-import com.phalaenopsis.repositories.UserRepository;
+import com.phalaenopsis.repository.UserRepository;
 
 @Service("userService")
 @Transactional
