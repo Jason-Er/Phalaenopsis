@@ -19,9 +19,8 @@ public class PlayServiceImpl implements PlayService{
 	private PlayRepository playRepository;
 	
 	@Override
-	public Play findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Play findById(Long id) {		
+		return playRepository.findOne(id);
 	}
 
 	@Override
@@ -32,26 +31,22 @@ public class PlayServiceImpl implements PlayService{
 
 	@Override
 	public void savePlay(Play play) {
-		// TODO Auto-generated method stub
-		
+		playRepository.save(play);
 	}
 
 	@Override
-	public void updatePlay(Play play) {
-		// TODO Auto-generated method stub
-		
+	public void updatePlay(Play play) {		
+		playRepository.save(play);
 	}
 
 	@Override
 	public void deletePlayById(Long id) {
-		// TODO Auto-generated method stub
-		
+		playRepository.delete(id);
 	}
 
 	@Override
 	public void deleteAllPlays() {
-		// TODO Auto-generated method stub
-		
+		playRepository.deleteAll();
 	}
 
 	@Override
