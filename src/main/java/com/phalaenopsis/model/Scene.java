@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Scene {
 	
@@ -18,14 +21,24 @@ public class Scene {
 	private Long id;
 
 	@ManyToOne(optional = false)
+	@JsonBackReference
 	private Play play;
 	
 	@OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Line> lines;
 
 	private String name;
 	
 	private Long ordinal;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Play getPlay() {
 		return play;
