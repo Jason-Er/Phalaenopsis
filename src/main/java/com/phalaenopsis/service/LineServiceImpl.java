@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.phalaenopsis.model.Line;
 import com.phalaenopsis.repository.LineRepository;
-import com.phalaenopsis.repository.PlayRepository;
 
 @Service("lineService")
 @Transactional

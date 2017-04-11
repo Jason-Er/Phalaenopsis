@@ -1,16 +1,17 @@
 package com.phalaenopsis.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.springframework.data.annotation.PersistenceConstructor;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Line {
@@ -18,12 +19,12 @@ public class Line {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-		
-	@ManyToOne(optional= false)
+
+	@ManyToOne(optional= false, fetch=FetchType.LAZY)
 	@JsonBackReference
-	private Scene scene;
+	private Scene scene;	
 	
-	private Long ordinal;
+	private Long ordinal;		
 	
 	public Long getId() {
 		return id;
@@ -47,7 +48,7 @@ public class Line {
 
 	public void setOrdinal(Long ordinal) {
 		this.ordinal = ordinal;
-	}
+	}	
 	
 	
 }
