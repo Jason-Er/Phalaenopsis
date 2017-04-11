@@ -35,8 +35,7 @@ public class RestApiController {
 	
 	@Autowired
     LineService lineService;
- 
-	/*
+ 	
 	@RequestMapping(value = "/play/", method = RequestMethod.GET)
     public ResponseEntity<List<Play>> listAllPlays() {
         List<Play> plays = playService.findAllPlays();
@@ -56,8 +55,8 @@ public class RestApiController {
         }
         return new ResponseEntity<List<Line>>(lines, HttpStatus.OK);
     }
-	*/
 	
+	/*
 	@RequestMapping(value = "/play/", method = RequestMethod.GET)
 	@ResponseBody
     public List<Play> listAllPlays() {
@@ -79,4 +78,5 @@ public class RestApiController {
         }
         return lines;
     }
+    */
 }
