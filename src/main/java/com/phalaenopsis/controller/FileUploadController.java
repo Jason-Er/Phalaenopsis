@@ -59,7 +59,7 @@ public class FileUploadController {
 	public ResponseEntity<Resource> serveFile(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @PathVariable String filename) {
 
-		Resource file = storageService.loadAsResource(filename);
+		Resource file = storageService.loadAsResource(filename, Tuple.<String, String, String> of(play, scene, line));
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
 				.body(file);
