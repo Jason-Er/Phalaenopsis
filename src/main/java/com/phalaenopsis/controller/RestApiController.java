@@ -147,22 +147,21 @@ public class RestApiController {
     
     // -------------------Add a File-------------------------------------------
     
-    @PostMapping("/file/audio/{play}/{scene}/{line}/")
+    @PostMapping("/file/{play}/{scene}/{line}/audio")
     @ResponseBody
     public ResponseEntity<?> handleFileUpload(@PathVariable String play,
     		@PathVariable String scene,
     		@PathVariable String line,
-    		@RequestParam("file") MultipartFile file,
-    		UriComponentsBuilder ucBuilder) {
+    		@RequestParam("file") MultipartFile file) {
 
     	if( StringUtil.isEmpty(play) || StringUtil.isEmpty(scene) || StringUtil.isEmpty(line)) {
     		logger.error("Unable to find parameters: audio with play {} scene {} line {} not found.", play, scene, line);
             return new ResponseEntity(new CustomErrorType("Unable to find parameters: audio with play scene line not found." + play + " not found."),
                     HttpStatus.NOT_FOUND);
     	}
-    	// storageService.store(file, Tuple.<String, String, String>of(play,scene,line));
+    	storageService.store(file, Tuple.<String, String, String>of(play,scene,line));
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/v1/play/{id}").buildAndExpand(0).toUri());
+        // headers.setLocation(ucBuilder.path("/api/v1/play/{id}").buildAndExpand(0).toUri());
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);        
     }
     
