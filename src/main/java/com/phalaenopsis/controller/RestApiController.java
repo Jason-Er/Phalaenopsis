@@ -122,7 +122,7 @@ public class RestApiController {
         return new ResponseEntity<Play>(HttpStatus.NO_CONTENT);
     }
     
-    // ------------------- Delete All Users-----------------------------
+    // ------------------- Delete All Plays-----------------------------
     
     @RequestMapping(value = "/play/", method = RequestMethod.DELETE)
     public ResponseEntity<Play> deleteAllUsers() {
@@ -130,40 +130,7 @@ public class RestApiController {
  
         playService.deleteAllPlays();
         return new ResponseEntity<Play>(HttpStatus.NO_CONTENT);
-    }
-    
-    // ------------------- Retrieve Single File-----------------------------
-    
-    @GetMapping("/file/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-        Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity
-                .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+file.getFilename()+"\"")
-                .body(file);
-    }
-    
-    // -------------------Add a File-------------------------------------------
-    
-    @PostMapping("/file/{play}/{scene}/{line}/audio")
-    @ResponseBody
-    public ResponseEntity<?> handleFileUpload(@PathVariable String play,
-    		@PathVariable String scene,
-    		@PathVariable String line,
-    		@RequestParam("file") MultipartFile file) {
-
-    	if( StringUtil.isEmpty(play) || StringUtil.isEmpty(scene) || StringUtil.isEmpty(line)) {
-    		logger.error("Unable to find parameters: audio with play {} scene {} line {} not found.", play, scene, line);
-            return new ResponseEntity(new CustomErrorType("Unable to find parameters: audio with play scene line not found." + play + " not found."),
-                    HttpStatus.NOT_FOUND);
-    	}
-    	storageService.store(file, Tuple.<String, String, String>of(play,scene,line));
-        HttpHeaders headers = new HttpHeaders();
-        // headers.setLocation(ucBuilder.path("/api/v1/play/{id}").buildAndExpand(0).toUri());
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);        
-    }
+    }        
     
 	@RequestMapping(value = "/line/", method = RequestMethod.GET)
     public ResponseEntity<List<Line>> listAllLines() {

@@ -11,9 +11,11 @@ import com.phalaenopsis.util.Tuple;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.stream.Stream;
 
 @Service
@@ -36,7 +38,8 @@ public class FileSystemStorageService implements StorageService {
 			}
 			String fileName = file.getOriginalFilename(); 
 			String prefix = fileName.substring(fileName.lastIndexOf("."));
-			Files.copy(file.getInputStream(), path.resolve( tuple._3().get() + prefix ));			
+			CopyOption[] options = new CopyOption[] { REPLACE_EXISTING };
+			Files.copy(file.getInputStream(), path.resolve( tuple._3().get() + prefix ),options);			
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		}
@@ -45,7 +48,9 @@ public class FileSystemStorageService implements StorageService {
 	@Override
 	public Stream<Path> loadAll() {
 		try {
-			return Files.walk(this.rootLocation, 1).filter(path -> !path.equals(this.rootLocation))
+			return Files.walk(this.rootLocation)
+					.filter(path -> !path.equals(this.rootLocation))
+					.filter(path -> Files.isRegularFile(path))
 					.map(path -> this.rootLocation.relativize(path));
 		} catch (IOException e) {
 			throw new StorageException("Failed to read stored files", e);
