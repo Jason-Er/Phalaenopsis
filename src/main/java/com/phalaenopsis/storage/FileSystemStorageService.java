@@ -29,13 +29,14 @@ public class FileSystemStorageService implements StorageService {
 	@Override
 	public void store(MultipartFile file, Tuple tuple) {
 		try {
-			Files.createDirectories(Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get()
-					+ "/" + tuple._3().get()));
+			Path path = Files.createDirectories(Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get()));
 
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
 			}
-			Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+			String fileName = file.getOriginalFilename(); 
+			String prefix = fileName.substring(fileName.lastIndexOf("."));
+			Files.copy(file.getInputStream(), path.resolve( tuple._3().get() + prefix ));			
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		}
