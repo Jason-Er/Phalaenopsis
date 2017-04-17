@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +35,7 @@ import com.phalaenopsis.util.Tuple;
 public class FileUploadController {
 
 	public static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
-	
+
 	private final StorageService storageService;
 
 	@Autowired
@@ -47,18 +48,18 @@ public class FileUploadController {
 
 		model.addAttribute("files",
 				storageService.loadAll()
-						.map(path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile",
+						.map(path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "getFileUpload",
 								"play", "1", "1", path.getFileName().toString()).build().toString())
 						.collect(Collectors.toList()));
 
 		return "uploadForm";
 	}
-	
+
 	// ------------------- Retrieve Single File-----------------------------
 
 	@GetMapping("/{play}/{scene}/{line}/audio/{filename:.+}")
 	@ResponseBody
-	public ResponseEntity<Resource> serveFile(@PathVariable String play, @PathVariable String scene,
+	public ResponseEntity<Resource> getFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @PathVariable String filename) {
 
 		Resource file = storageService.loadAsResource(filename, Tuple.<String, String, String> of(play, scene, line));
@@ -67,11 +68,27 @@ public class FileUploadController {
 				.body(file);
 	}
 
+	// ------------------- Delete Single File-----------------------------
+
+	@DeleteMapping("/{play}/{scene}/{line}/audio/{filename:.+}")
+	@ResponseBody
+	public ResponseEntity<?> deleteFileUpload(@PathVariable String play, @PathVariable String scene,
+			@PathVariable String line, @PathVariable String filename) {
+
+		if(storageService.findResource(filename, Tuple.<String, String, String> of(play, scene, line))) {
+			boolean isDelete = storageService.deleteResource(filename, Tuple.<String, String, String> of(play, scene, line));			
+		} else {
+			return new ResponseEntity(new CustomErrorType("Play with id " + filename 
+                    + " not found"), HttpStatus.NOT_FOUND);
+		}		
+		return new ResponseEntity(HttpStatus.OK);
+	}
+
 	// -------------------Add a File-------------------------------------------
 
 	@PostMapping("/{play}/{scene}/{line}/audio")
 	@ResponseBody
-	public ResponseEntity<?> handleFileUpload(@PathVariable String play, @PathVariable String scene,
+	public ResponseEntity<?> addFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @RequestParam("file") MultipartFile file) {
 
 		if (StringUtil.isEmpty(play) || StringUtil.isEmpty(scene) || StringUtil.isEmpty(line)) {
@@ -83,8 +100,8 @@ public class FileUploadController {
 					HttpStatus.NOT_FOUND);
 		}
 		Path path = storageService.store(file, Tuple.<String, String, String> of(play, scene, line));
-		String url = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile",
-				play, scene, line, path.getFileName().toString()).build().toString();
+		String url = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "getFileUpload", play, scene,
+				line, path.getFileName().toString()).build().toString();
 		UploadAudioStatus uploadAudioStatus = new UploadAudioStatus();
 		uploadAudioStatus.setPlay(play);
 		uploadAudioStatus.setScene(scene);
@@ -92,4 +109,5 @@ public class FileUploadController {
 		uploadAudioStatus.setUrl(url);
 		return new ResponseEntity<UploadAudioStatus>(uploadAudioStatus, HttpStatus.CREATED);
 	}
+
 }

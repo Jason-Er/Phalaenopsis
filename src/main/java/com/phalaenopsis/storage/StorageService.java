@@ -19,6 +19,8 @@ public interface StorageService {
     Path load(String filename);
 
     Resource loadAsResource(String filename, Tuple tuple);
+    boolean findResource(String filename, Tuple tuple);
+    boolean deleteResource(String filename, Tuple tuple);
 
     void deleteAll();
 

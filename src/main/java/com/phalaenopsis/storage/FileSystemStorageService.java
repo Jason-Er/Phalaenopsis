@@ -94,4 +94,24 @@ public class FileSystemStorageService implements StorageService {
 			throw new StorageException("Could not initialize storage", e);
 		}
 	}
+
+	@Override
+	public boolean findResource(String filename, Tuple tuple) {		
+		Path path = Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
+		return Files.isRegularFile(path);
+	}
+
+	@Override
+	public boolean deleteResource(String filename, Tuple tuple) {
+		boolean status = false;
+		Path path = Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
+		try {
+			Files.delete(path);
+			status = true;
+		} catch (IOException e) {
+			status = false;
+			e.printStackTrace();
+		}
+		return status;
+	}
 }
