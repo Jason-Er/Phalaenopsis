@@ -29,7 +29,8 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public void store(MultipartFile file, Tuple tuple) {
+	public Path store(MultipartFile file, Tuple tuple) {
+		Path filePath = null;
 		try {
 			Path path = Files.createDirectories(Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get()));
 
@@ -39,10 +40,12 @@ public class FileSystemStorageService implements StorageService {
 			String fileName = file.getOriginalFilename(); 
 			String prefix = fileName.substring(fileName.lastIndexOf("."));
 			CopyOption[] options = new CopyOption[] { REPLACE_EXISTING };
-			Files.copy(file.getInputStream(), path.resolve( tuple._3().get() + prefix ),options);			
+			Files.copy(file.getInputStream(), path.resolve( tuple._3().get() + prefix ),options);	
+			filePath = path.resolve( tuple._3().get() + prefix );
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		}
+		return filePath;
 	}
 
 	@Override

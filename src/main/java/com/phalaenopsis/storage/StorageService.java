@@ -12,7 +12,7 @@ public interface StorageService {
 
     void init();
 
-    void store(MultipartFile file, Tuple tuple);
+    Path store(MultipartFile file, Tuple tuple);
 
     Stream<Path> loadAll();
 

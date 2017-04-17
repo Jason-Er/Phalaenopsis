@@ -27,10 +27,9 @@ public class Line {
 	@JsonBackReference
 	private Scene scene;	
 	
-	@OneToMany
-	private List<Audio> audios;
+	private String audioURL = null;
 	
-	private Long ordinal;		
+	private Long ordinal;
 	
 	public Long getId() {
 		return id;
@@ -54,6 +53,14 @@ public class Line {
 
 	public void setOrdinal(Long ordinal) {
 		this.ordinal = ordinal;
+	}
+
+	public String getAudioURL() {
+		return audioURL;
+	}
+
+	public void setAudioURL(String audioURL) {
+		this.audioURL = audioURL;
 	}	
 	
 	

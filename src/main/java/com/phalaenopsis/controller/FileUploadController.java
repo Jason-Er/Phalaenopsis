@@ -1,6 +1,7 @@
 package com.phalaenopsis.controller;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import com.phalaenopsis.storage.StorageService;
+import com.phalaenopsis.storage.UploadAudioStatus;
 import com.phalaenopsis.util.CustomErrorType;
 import com.phalaenopsis.util.StringUtil;
 import com.phalaenopsis.util.Tuple;
@@ -80,9 +82,14 @@ public class FileUploadController {
 							"Unable to find parameters: audio with play scene line not found." + play + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
-		storageService.store(file, Tuple.<String, String, String> of(play, scene, line));
-		HttpHeaders headers = new HttpHeaders();
-		// headers.setLocation(ucBuilder.path("/api/v1/play/{id}").buildAndExpand(0).toUri());
-		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+		Path path = storageService.store(file, Tuple.<String, String, String> of(play, scene, line));
+		String url = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile",
+				play, scene, line, path.getFileName().toString()).build().toString();
+		UploadAudioStatus uploadAudioStatus = new UploadAudioStatus();
+		uploadAudioStatus.setPlay(play);
+		uploadAudioStatus.setScene(scene);
+		uploadAudioStatus.setLine(line);
+		uploadAudioStatus.setUrl(url);
+		return new ResponseEntity<UploadAudioStatus>(uploadAudioStatus, HttpStatus.CREATED);
 	}
 }
