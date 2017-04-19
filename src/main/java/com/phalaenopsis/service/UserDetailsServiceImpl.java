@@ -20,16 +20,16 @@ import com.phalaenopsis.model.UserState;
 import com.phalaenopsis.repository.UserRepository;
 
 @Service("customUserDetailsService")
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-	public static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
+	public static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-		User user = userRepository.findByName(name);
+		User user = userService.findByName(name);
 		logger.info("User : " + user + "  name: " + name);
 		if (user == null) {
 			logger.info("User not found");
