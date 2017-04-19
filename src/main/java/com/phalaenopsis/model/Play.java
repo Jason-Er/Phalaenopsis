@@ -12,18 +12,18 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-public class Play{	
-	
+public class Play {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@OneToMany(mappedBy = "play", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<Scene> scenes;
-	
+
 	private String name;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -47,6 +47,5 @@ public class Play{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

@@ -13,11 +13,11 @@ import com.phalaenopsis.repository.LineRepository;
 
 @Service("lineService")
 @Transactional
-public class LineServiceImpl implements LineService{
+public class LineServiceImpl implements LineService {
 
 	@Autowired
 	private LineRepository lineRepository;
-	
+
 	@Override
 	public Line findById(Long id) {
 		// TODO Auto-generated method stub
@@ -33,25 +33,25 @@ public class LineServiceImpl implements LineService{
 	@Override
 	public void saveLine(Line line) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateLine(Line line) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteLineById(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteAllLines() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

@@ -11,6 +11,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,14 +34,14 @@ import com.phalaenopsis.util.Tuple;
 
 @Controller
 @RequestMapping("/file/v1")
-public class FileUploadController {
+public class StorageController {
 
-	public static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
+	public static final Logger logger = LoggerFactory.getLogger(StorageController.class);
 
 	private final StorageService storageService;
 
 	@Autowired
-	public FileUploadController(StorageService storageService) {
+	public StorageController(StorageService storageService) {
 		this.storageService = storageService;
 	}
 
@@ -48,7 +50,7 @@ public class FileUploadController {
 
 		model.addAttribute("files",
 				storageService.loadAll()
-						.map(path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "getFileUpload",
+						.map(path -> MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getFileUpload",
 								"play", "1", "1", path.getFileName().toString()).build().toString())
 						.collect(Collectors.toList()));
 
@@ -75,12 +77,13 @@ public class FileUploadController {
 	public ResponseEntity<?> deleteFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @PathVariable String filename) {
 
-		if(storageService.findResource(filename, Tuple.<String, String, String> of(play, scene, line))) {
-			boolean isDelete = storageService.deleteResource(filename, Tuple.<String, String, String> of(play, scene, line));			
+		if (storageService.findResource(filename, Tuple.<String, String, String> of(play, scene, line))) {
+			boolean isDelete = storageService.deleteResource(filename,
+					Tuple.<String, String, String> of(play, scene, line));
 		} else {
-			return new ResponseEntity(new CustomErrorType("Play with id " + filename 
-                    + " not found"), HttpStatus.NOT_FOUND);
-		}		
+			return new ResponseEntity(new CustomErrorType("Play with id " + filename + " not found"),
+					HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity(HttpStatus.OK);
 	}
 
@@ -100,8 +103,8 @@ public class FileUploadController {
 					HttpStatus.NOT_FOUND);
 		}
 		Path path = storageService.store(file, Tuple.<String, String, String> of(play, scene, line));
-		String url = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "getFileUpload", play, scene,
-				line, path.getFileName().toString()).build().toString();
+		String url = MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getFileUpload", play, scene, line,
+				path.getFileName().toString()).build().toString();
 		UploadAudioStatus uploadAudioStatus = new UploadAudioStatus();
 		uploadAudioStatus.setPlay(play);
 		uploadAudioStatus.setScene(scene);

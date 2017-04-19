@@ -16,23 +16,23 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Scene {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToOne(optional = false, fetch=FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Play play;
-	
+
 	@OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<Line> lines;
 
 	private String name;
-	
+
 	private Long ordinal;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -72,6 +72,5 @@ public class Scene {
 	public void setOrdinal(Long ordinal) {
 		this.ordinal = ordinal;
 	}
-	
-	
+
 }

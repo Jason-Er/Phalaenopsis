@@ -10,18 +10,20 @@ import java.util.stream.Stream;
 
 public interface StorageService {
 
-    void init();
+	void init();
 
-    Path store(MultipartFile file, Tuple tuple);
+	Path store(MultipartFile file, Tuple tuple);
 
-    Stream<Path> loadAll();
+	Stream<Path> loadAll();
 
-    Path load(String filename);
+	Path load(String filename);
 
-    Resource loadAsResource(String filename, Tuple tuple);
-    boolean findResource(String filename, Tuple tuple);
-    boolean deleteResource(String filename, Tuple tuple);
+	Resource loadAsResource(String filename, Tuple tuple);
 
-    void deleteAll();
+	boolean findResource(String filename, Tuple tuple);
+
+	boolean deleteResource(String filename, Tuple tuple);
+
+	void deleteAll();
 
 }

@@ -2,11 +2,11 @@ package com.phalaenopsis.repository;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.phalaenopsis.model.User;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findByName(String name);
+	User findByName(String name);
 }

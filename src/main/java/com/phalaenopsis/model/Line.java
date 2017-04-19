@@ -18,19 +18,19 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Line {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToOne(optional= false, fetch=FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JsonBackReference
-	private Scene scene;	
-	
+	private Scene scene;
+
 	private String audioURL = null;
-	
+
 	private Long ordinal;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -61,7 +61,6 @@ public class Line {
 
 	public void setAudioURL(String audioURL) {
 		this.audioURL = audioURL;
-	}	
-	
-	
+	}
+
 }

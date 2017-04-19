@@ -1,7 +1,7 @@
 package com.phalaenopsis.storage;
 
 public class UploadAudioStatus {
-		
+
 	private String play;
 	private String scene;
 	private String line;
@@ -38,5 +38,5 @@ public class UploadAudioStatus {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
+
 }

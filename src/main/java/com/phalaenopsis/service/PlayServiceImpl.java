@@ -13,13 +13,13 @@ import com.phalaenopsis.repository.PlayRepository;
 
 @Service("playService")
 @Transactional
-public class PlayServiceImpl implements PlayService{
+public class PlayServiceImpl implements PlayService {
 
 	@Autowired
 	private PlayRepository playRepository;
-	
+
 	@Override
-	public Play findById(Long id) {		
+	public Play findById(Long id) {
 		return playRepository.findOne(id);
 	}
 
@@ -35,7 +35,7 @@ public class PlayServiceImpl implements PlayService{
 	}
 
 	@Override
-	public void updatePlay(Play play) {		
+	public void updatePlay(Play play) {
 		playRepository.save(play);
 	}
 

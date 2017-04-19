@@ -21,7 +21,7 @@ public interface LineService {
 	void deleteAllLines();
 
 	List<Line> findAllLines();
-	
+
 	Page<Line> findByPage(Pageable var1);
 
 	boolean isPlayExist(Line line);

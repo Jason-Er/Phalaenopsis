@@ -22,9 +22,9 @@ public interface PlayService {
 	void deleteAllPlays();
 
 	List<Play> findAllPlays();
-	
+
 	Page<Play> findByPage(Pageable var1);
 
 	boolean isPlayExist(Play play);
-	
+
 }

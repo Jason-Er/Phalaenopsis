@@ -12,7 +12,7 @@ import com.phalaenopsis.storage.StorageProperties;
 
 import com.phalaenopsis.storage.StorageService;
 
-@SpringBootApplication(scanBasePackages={"com.phalaenopsis"})
+@SpringBootApplication(scanBasePackages = { "com.phalaenopsis" })
 @EnableConfigurationProperties(StorageProperties.class)
 public class PhalaenopsisApplication {
 
@@ -21,12 +21,12 @@ public class PhalaenopsisApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PhalaenopsisApplication.class, args);
 	}
-	
+
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
-            storageService.deleteAll();
-            storageService.init();
+			storageService.deleteAll();
+			storageService.init();
 		};
 	}
 }

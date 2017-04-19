@@ -32,16 +32,17 @@ public class FileSystemStorageService implements StorageService {
 	public Path store(MultipartFile file, Tuple tuple) {
 		Path filePath = null;
 		try {
-			Path path = Files.createDirectories(Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get()));
+			Path path = Files.createDirectories(
+					Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get()));
 
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
 			}
-			String fileName = file.getOriginalFilename(); 
+			String fileName = file.getOriginalFilename();
 			String prefix = fileName.substring(fileName.lastIndexOf("."));
 			CopyOption[] options = new CopyOption[] { REPLACE_EXISTING };
-			Files.copy(file.getInputStream(), path.resolve( tuple._3().get() + prefix ),options);	
-			filePath = path.resolve( tuple._3().get() + prefix );
+			Files.copy(file.getInputStream(), path.resolve(tuple._3().get() + prefix), options);
+			filePath = path.resolve(tuple._3().get() + prefix);
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		}
@@ -51,10 +52,8 @@ public class FileSystemStorageService implements StorageService {
 	@Override
 	public Stream<Path> loadAll() {
 		try {
-			return Files.walk(this.rootLocation)
-					.filter(path -> !path.equals(this.rootLocation))
-					.filter(path -> Files.isRegularFile(path))
-					.map(path -> this.rootLocation.relativize(path));
+			return Files.walk(this.rootLocation).filter(path -> !path.equals(this.rootLocation))
+					.filter(path -> Files.isRegularFile(path)).map(path -> this.rootLocation.relativize(path));
 		} catch (IOException e) {
 			throw new StorageException("Failed to read stored files", e);
 		}
@@ -69,7 +68,8 @@ public class FileSystemStorageService implements StorageService {
 	@Override
 	public Resource loadAsResource(String filename, Tuple tuple) {
 		try {
-			Path file = Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
+			Path file = Paths
+					.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
@@ -96,15 +96,17 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public boolean findResource(String filename, Tuple tuple) {		
-		Path path = Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
+	public boolean findResource(String filename, Tuple tuple) {
+		Path path = Paths
+				.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
 		return Files.isRegularFile(path);
 	}
 
 	@Override
 	public boolean deleteResource(String filename, Tuple tuple) {
 		boolean status = false;
-		Path path = Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
+		Path path = Paths
+				.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
 		try {
 			Files.delete(path);
 			status = true;
