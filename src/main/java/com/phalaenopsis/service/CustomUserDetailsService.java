@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.phalaenopsis.model.Role;
 import com.phalaenopsis.model.User;
+import com.phalaenopsis.model.UserState;
 import com.phalaenopsis.repository.UserRepository;
 
 @Service("customUserDetailsService")
@@ -35,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("Username not found");
 		}
 		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
-				user.getState().equals("Active"), true, true, true, getGrantedAuthorities(user));
+				user.getState()==UserState.ACTIVE, true, true, true, getGrantedAuthorities(user));
 	}
 
 	private List<GrantedAuthority> getGrantedAuthorities(User user) {
