@@ -16,7 +16,7 @@ public class DataInitialization implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		
+		/*
 		User user = new User();
 		user.setName("Jack");
 		user.setEmail("Bauer@gmail.com");
@@ -31,7 +31,7 @@ public class DataInitialization implements CommandLineRunner {
 		for (User user1 : userService.findAllUsers()) {
 			System.out.println(user1);
 		}
-		
+		*/
 	}
 
 }
