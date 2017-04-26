@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import com.phalaenopsis.storage.StorageService;
 import com.phalaenopsis.storage.UploadAudioStatus;
+import com.phalaenopsis.util.AuthUtil;
 import com.phalaenopsis.util.CustomErrorType;
 import com.phalaenopsis.util.StringUtil;
 import com.phalaenopsis.util.Tuple;
@@ -48,6 +49,8 @@ public class StorageController {
 	@GetMapping("/")
 	public String listUploadedFiles(Model model) throws IOException {
 
+		logger.info("User " + AuthUtil.getAuthUserName() + "using addFileUpload!");
+		
 		model.addAttribute("files",
 				storageService.loadAll()
 						.map(path -> MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getFileUpload",
@@ -94,6 +97,8 @@ public class StorageController {
 	public ResponseEntity<?> addFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @RequestParam("file") MultipartFile file) {
 
+		logger.info("User " + AuthUtil.getAuthUserName() + "using addFileUpload!");
+		
 		if (StringUtil.isEmpty(play) || StringUtil.isEmpty(scene) || StringUtil.isEmpty(line)) {
 			logger.error("Unable to find parameters: audio with play {} scene {} line {} not found.", play, scene,
 					line);

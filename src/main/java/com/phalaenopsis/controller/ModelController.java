@@ -7,6 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +29,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.phalaenopsis.model.Line;
 import com.phalaenopsis.model.Play;
 import com.phalaenopsis.model.User;
+import com.phalaenopsis.model.label.View;
 import com.phalaenopsis.service.LineService;
 import com.phalaenopsis.service.PlayService;
 import com.phalaenopsis.storage.StorageService;
@@ -84,7 +92,7 @@ public class ModelController {
 		playService.savePlay(play);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/api/v1/play/{id}").buildAndExpand(play.getId()).toUri());
+		headers.setLocation(ucBuilder.path("/model/v1/play/{id}").buildAndExpand(play.getId()).toUri());
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
 
@@ -146,4 +154,13 @@ public class ModelController {
 		return new ResponseEntity<List<Line>>(lines, HttpStatus.OK);
 	}
 
+	// -------------------Retrieve pageable playinfo ------------------------------------------
+
+	@RequestMapping(value = "/playsInfo", method = RequestMethod.GET)
+	@JsonView(View.PlayInfo.class) 
+	public Page<Play> getPlaysInfo(@PageableDefault(value = 15, sort = { "id" }, direction = Sort.Direction.DESC) 
+    Pageable pageable) {
+	    return playService.findByPage(pageable);
+	}
+	
 }

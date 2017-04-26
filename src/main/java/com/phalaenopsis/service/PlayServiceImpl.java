@@ -56,8 +56,7 @@ public class PlayServiceImpl implements PlayService {
 
 	@Override
 	public Page<Play> findByPage(Pageable var1) {
-		// TODO Auto-generated method stub
-		return null;
+		return playRepository.findAll(var1);
 	}
 
 	@Override
