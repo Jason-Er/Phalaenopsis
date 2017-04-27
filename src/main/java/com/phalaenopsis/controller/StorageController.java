@@ -34,7 +34,7 @@ import com.phalaenopsis.util.StringUtil;
 import com.phalaenopsis.util.Tuple;
 
 @Controller
-@RequestMapping("/file/v1")
+@RequestMapping("/v1/file")
 public class StorageController {
 
 	public static final Logger logger = LoggerFactory.getLogger(StorageController.class);

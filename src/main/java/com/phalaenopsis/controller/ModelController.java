@@ -42,7 +42,7 @@ import com.phalaenopsis.util.StringUtil;
 import com.phalaenopsis.util.Tuple;
 
 @RestController
-@RequestMapping("/model/v1")
+@RequestMapping("/v1/model")
 public class ModelController {
 
 	public static final Logger logger = LoggerFactory.getLogger(ModelController.class);
