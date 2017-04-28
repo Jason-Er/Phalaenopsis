@@ -118,4 +118,51 @@ public class StorageController {
 		return new ResponseEntity<UploadAudioStatus>(uploadAudioStatus, HttpStatus.CREATED);
 	}
 
+	
+	// ------------------- Retrieve Single File-----------------------------
+
+	@GetMapping("/{play}/still/{filename:.+}")
+	@ResponseBody
+	public ResponseEntity<Resource> getStillUpload(@PathVariable String play, @PathVariable String filename) {
+		Resource file = storageService.loadStillAsResource(filename, play);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "filename=\"" + file.getFilename() + "\"")
+				.body(file);
+	}
+	
+	@DeleteMapping("/{play}/still/{filename:.+}")
+	@ResponseBody
+	public ResponseEntity<?> deleteStillUpload(@PathVariable String play, @PathVariable String filename) {
+
+		if (storageService.findStillResource(filename, play)) {
+			boolean isDelete = storageService.deleteStillResource(filename, play);
+		} else {
+			return new ResponseEntity(new CustomErrorType("Play with id " + filename + " not found"),
+					HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity(HttpStatus.OK);
+	}
+	
+	// -------------------Add a File-------------------------------------------
+	
+	@PostMapping("/{play}/still")
+	@ResponseBody
+	public ResponseEntity<?> addStillUpload(@PathVariable String play, @RequestParam("file") MultipartFile file) {
+
+		logger.info("User " + AuthUtil.getAuthUserName() + "using addFileUpload!");
+		
+		if (StringUtil.isEmpty(play)) {
+			logger.error("Unable to find parameters: audio with play {} not found.", play);
+			return new ResponseEntity(
+					new CustomErrorType(
+							"Unable to find parameters: audio with play scene line not found." + play + " not found."),
+					HttpStatus.NOT_FOUND);
+		}
+		Path path = storageService.storeStill(file, play);
+		String url = MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getStillUpload", play, path.getFileName().toString()).build().toString();
+		UploadAudioStatus uploadAudioStatus = new UploadAudioStatus();
+		uploadAudioStatus.setPlay(play);		
+		uploadAudioStatus.setUrl(url);
+		return new ResponseEntity<UploadAudioStatus>(uploadAudioStatus, HttpStatus.CREATED);
+	}
 }

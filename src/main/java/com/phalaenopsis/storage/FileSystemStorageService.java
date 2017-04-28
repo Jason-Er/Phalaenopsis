@@ -48,6 +48,27 @@ public class FileSystemStorageService implements StorageService {
 		}
 		return filePath;
 	}
+	
+	@Override
+	public Path storeStill(MultipartFile file, String play) {
+		Path filePath = null;
+		try {
+			Path path = Files.createDirectories(
+					Paths.get(rootLocation.toString() + "/" + play));
+
+			if (file.isEmpty()) {
+				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
+			}
+			String fileName = file.getOriginalFilename();
+			String prefix = fileName.substring(fileName.lastIndexOf("."));
+			CopyOption[] options = new CopyOption[] { REPLACE_EXISTING };
+			Files.copy(file.getInputStream(), path.resolve(fileName), options);
+			filePath = path.resolve(fileName);
+		} catch (IOException e) {
+			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
+		}
+		return filePath;
+	}
 
 	@Override
 	public Stream<Path> loadAll() {
@@ -82,6 +103,22 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
+	public Resource loadStillAsResource(String filename, String play) {
+		try {
+			Path file = Paths
+					.get(rootLocation.toString() + "/" + play + "/" + filename);
+			Resource resource = new UrlResource(file.toUri());
+			if (resource.exists() || resource.isReadable()) {
+				return resource;
+			} else {
+				throw new StorageFileNotFoundException("Could not read file: " + filename);
+			}
+		} catch (MalformedURLException e) {
+			throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+		}
+	}
+	
+	@Override
 	public void deleteAll() {
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
@@ -103,6 +140,13 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
+	public boolean findStillResource(String filename, String play) {
+		Path path = Paths
+				.get(rootLocation.toString() + "/" + play + "/" + filename);
+		return Files.isRegularFile(path);
+	}
+	
+	@Override
 	public boolean deleteResource(String filename, Tuple tuple) {
 		boolean status = false;
 		Path path = Paths
@@ -116,4 +160,20 @@ public class FileSystemStorageService implements StorageService {
 		}
 		return status;
 	}
+
+	@Override
+	public boolean deleteStillResource(String filename, String play) {
+		boolean status = false;
+		Path path = Paths
+				.get(rootLocation.toString() + "/" + play + "/" + filename);
+		try {
+			Files.delete(path);
+			status = true;
+		} catch (IOException e) {
+			status = false;
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
 }
