@@ -125,6 +125,7 @@ public class StorageController {
 	@ResponseBody
 	public ResponseEntity<Resource> getStillUpload(@PathVariable String play, @PathVariable String filename) {
 		Resource file = storageService.loadStillAsResource(filename, play);
+		logger.info("getStillUpload retrieve file: " + filename);
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "filename=\"" + file.getFilename() + "\"")
 				.body(file);

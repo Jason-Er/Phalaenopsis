@@ -2,6 +2,7 @@ package com.phalaenopsis.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,9 @@ public class Line {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Scene scene;
-
+	@Column(nullable=false)
+	private String text; 
+	
 	private String audioURL = null;
 
 	private Long ordinal;
@@ -53,6 +56,14 @@ public class Line {
 
 	public void setOrdinal(Long ordinal) {
 		this.ordinal = ordinal;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public String getAudioURL() {
