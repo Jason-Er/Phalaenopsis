@@ -29,7 +29,7 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public Path store(MultipartFile file, Tuple tuple) {
+	public Path storeAudio(MultipartFile file, Tuple tuple) {
 		Path filePath = null;
 		try {
 			Path path = Files.createDirectories(
@@ -87,7 +87,7 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public Resource loadAsResource(String filename, Tuple tuple) {
+	public Resource loadAudioAsResource(String filename, Tuple tuple) {
 		try {
 			Path file = Paths
 					.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
@@ -133,7 +133,7 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public boolean findResource(String filename, Tuple tuple) {
+	public boolean findAudioResource(String filename, Tuple tuple) {
 		Path path = Paths
 				.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
 		return Files.isRegularFile(path);
@@ -147,7 +147,7 @@ public class FileSystemStorageService implements StorageService {
 	}
 	
 	@Override
-	public boolean deleteResource(String filename, Tuple tuple) {
+	public boolean deleteAudioResource(String filename, Tuple tuple) {
 		boolean status = false;
 		Path path = Paths
 				.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);

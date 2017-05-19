@@ -12,7 +12,7 @@ public interface StorageService {
 
 	void init();	
 	
-	Path store(MultipartFile file, Tuple tuple);
+	Path storeAudio(MultipartFile file, Tuple tuple);
 
 	Path storeStill(MultipartFile file, String play);
 	
@@ -22,13 +22,13 @@ public interface StorageService {
 
 	Resource loadStillAsResource(String filename, String play);
 	
-	Resource loadAsResource(String filename, Tuple tuple);
+	Resource loadAudioAsResource(String filename, Tuple tuple);
 
-	boolean findResource(String filename, Tuple tuple);
+	boolean findAudioResource(String filename, Tuple tuple);
 
 	boolean findStillResource(String filename, String play);
 	
-	boolean deleteResource(String filename, Tuple tuple);
+	boolean deleteAudioResource(String filename, Tuple tuple);
 
 	boolean deleteStillResource(String filename, String play);
 	

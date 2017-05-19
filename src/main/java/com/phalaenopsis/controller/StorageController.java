@@ -67,7 +67,7 @@ public class StorageController {
 	public ResponseEntity<Resource> getFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @PathVariable String filename) {
 
-		Resource file = storageService.loadAsResource(filename, Tuple.<String, String, String> of(play, scene, line));
+		Resource file = storageService.loadAudioAsResource(filename, Tuple.<String, String, String> of(play, scene, line));
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
 				.body(file);
@@ -80,8 +80,8 @@ public class StorageController {
 	public ResponseEntity<?> deleteFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @PathVariable String filename) {
 
-		if (storageService.findResource(filename, Tuple.<String, String, String> of(play, scene, line))) {
-			boolean isDelete = storageService.deleteResource(filename,
+		if (storageService.findAudioResource(filename, Tuple.<String, String, String> of(play, scene, line))) {
+			boolean isDelete = storageService.deleteAudioResource(filename,
 					Tuple.<String, String, String> of(play, scene, line));
 		} else {
 			return new ResponseEntity(new CustomErrorType("Play with id " + filename + " not found"),
@@ -107,7 +107,7 @@ public class StorageController {
 							"Unable to find parameters: audio with play scene line not found." + play + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
-		Path path = storageService.store(file, Tuple.<String, String, String> of(play, scene, line));
+		Path path = storageService.storeAudio(file, Tuple.<String, String, String> of(play, scene, line));
 		String url = MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getFileUpload", play, scene, line,
 				path.getFileName().toString()).build().toString();
 		UploadAudioStatus uploadAudioStatus = new UploadAudioStatus();
