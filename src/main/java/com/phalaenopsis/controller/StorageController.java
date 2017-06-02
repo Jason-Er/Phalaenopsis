@@ -66,10 +66,11 @@ public class StorageController {
 	@ResponseBody
 	public ResponseEntity<Resource> getFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @PathVariable String filename) {
-
+		logger.info("Retrieve Single File --- Play: " + play + " Scene: " + scene + " line: "+line+" filename: " + filename);
+		
 		Resource file = storageService.loadAudioAsResource(filename, Tuple.<String, String, String> of(play, scene, line));
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getFilename())
 				.body(file);
 	}
 
@@ -97,7 +98,7 @@ public class StorageController {
 	public ResponseEntity<?> addFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @RequestParam("file") MultipartFile file) {
 
-		logger.info("User " + AuthUtil.getAuthUserName() + "using addFileUpload!");
+		logger.info("Add a File --- Play: " + play + " Scene: " + scene + " line: "+line);
 		
 		if (StringUtil.isEmpty(play) || StringUtil.isEmpty(scene) || StringUtil.isEmpty(line)) {
 			logger.error("Unable to find parameters: audio with play {} scene {} line {} not found.", play, scene,
