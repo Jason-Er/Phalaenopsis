@@ -3,6 +3,7 @@ package com.phalaenopsis.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,6 +26,9 @@ public class Scene {
 	@JsonBackReference
 	private Play play;
 
+	@Column(name = "play_id", insertable = false, updatable = false)
+	private Long playId;
+	
 	@OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<Line> lines;
@@ -71,6 +75,14 @@ public class Scene {
 
 	public void setOrdinal(Long ordinal) {
 		this.ordinal = ordinal;
+	}
+
+	public Long getPlayId() {
+		return playId;
+	}
+
+	public void setPlayId(Long playId) {
+		this.playId = playId;
 	}
 
 }

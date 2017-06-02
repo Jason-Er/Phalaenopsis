@@ -1,7 +1,5 @@
 package com.phalaenopsis.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,13 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Line {
@@ -27,6 +20,10 @@ public class Line {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Scene scene;
+	
+	@Column(name = "scene_id", insertable = false, updatable = false)
+	private Long sceneId;
+	
 	@Column(nullable=false)
 	private String text; 
 	
@@ -72,6 +69,14 @@ public class Line {
 
 	public void setAudioURL(String audioURL) {
 		this.audioURL = audioURL;
+	}
+
+	public Long getSceneId() {
+		return sceneId;
+	}
+
+	public void setSceneId(Long sceneId) {
+		this.sceneId = sceneId;
 	}
 
 }
