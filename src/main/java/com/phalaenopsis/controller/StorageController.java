@@ -68,7 +68,7 @@ public class StorageController {
 			@PathVariable String line, @PathVariable String filename) {
 		logger.info("Retrieve Single File --- Play: " + play + " Scene: " + scene + " line: "+line+" filename: " + filename);
 		
-		Resource file = storageService.loadAudioAsResource(filename, Tuple.<String, String, String> of(play, scene, line));
+		Resource file = storageService.loadAudioAsResource(AuthUtil.getAuthUserName(), filename, Tuple.<String, String, String> of(play, scene, line));
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getFilename())
 				.body(file);
@@ -97,7 +97,6 @@ public class StorageController {
 	@ResponseBody
 	public ResponseEntity<?> addFileUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @RequestParam("file") MultipartFile file) {
-
 		logger.info("Add a File --- Play: " + play + " Scene: " + scene + " line: "+line);
 		
 		if (StringUtil.isEmpty(play) || StringUtil.isEmpty(scene) || StringUtil.isEmpty(line)) {
@@ -108,7 +107,7 @@ public class StorageController {
 							"Unable to find parameters: audio with play scene line not found." + play + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
-		Path path = storageService.storeAudio(file, Tuple.<String, String, String> of(play, scene, line));
+		Path path = storageService.storeAudio(AuthUtil.getAuthUserName(), file, Tuple.<String, String, String> of(play, scene, line));
 		String url = MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getFileUpload", play, scene, line,
 				path.getFileName().toString()).build().toString();
 		UploadAudioStatus uploadAudioStatus = new UploadAudioStatus();

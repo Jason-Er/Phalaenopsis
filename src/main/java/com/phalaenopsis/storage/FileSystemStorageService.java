@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.phalaenopsis.util.AuthUtil;
 import com.phalaenopsis.util.Tuple;
 
 import java.io.IOException;
@@ -29,11 +30,11 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public Path storeAudio(MultipartFile file, Tuple tuple) {
+	public Path storeAudio(String username, MultipartFile file, Tuple tuple) {
 		Path filePath = null;
 		try {
 			Path path = Files.createDirectories(
-					Paths.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get()));
+					Paths.get(rootLocation.toString() + "/" + username + "/" + tuple._1().get() + "/" + tuple._2().get()));
 
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
@@ -87,10 +88,10 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public Resource loadAudioAsResource(String filename, Tuple tuple) {
+	public Resource loadAudioAsResource(String username, String filename, Tuple tuple) {
 		try {
 			Path file = Paths
-					.get(rootLocation.toString() + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
+					.get(rootLocation.toString() + "/" + username + "/" + tuple._1().get() + "/" + tuple._2().get() + "/" + filename);
 			Resource resource = new UrlResource(file.toUri());
 			if (resource.exists() || resource.isReadable()) {
 				return resource;
