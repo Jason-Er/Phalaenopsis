@@ -29,6 +29,11 @@ public class Play {
 	@OneToMany(mappedBy = "play", cascade = CascadeType.ALL)	
 	@JsonManagedReference
 	@JsonView(View.Play.class)
+	private List<RoleInPlay> cast;
+	
+	@OneToMany(mappedBy = "play", cascade = CascadeType.ALL)	
+	@JsonManagedReference
+	@JsonView(View.Play.class)
 	private List<Scene> scenes;
 	
 	@Column(nullable=false)
@@ -36,11 +41,8 @@ public class Play {
 	@JsonView(View.PlayInfo.class)
 	private String stillUrl;
 	@JsonView(View.PlayInfo.class)
-	private String extract;
-	/*
-	@OneToMany(mappedBy = "play", cascade = CascadeType.ALL)	
-	private List<RoleInPlay> cast;
-	*/
+	private String extract;		
+	
 	public Long getId() {
 		return id;
 	}
@@ -80,7 +82,7 @@ public class Play {
 	public void setExtract(String extract) {
 		this.extract = extract;
 	}
-/*
+
 	public List<RoleInPlay> getCast() {
 		return cast;
 	}
@@ -88,5 +90,5 @@ public class Play {
 	public void setCast(List<RoleInPlay> cast) {
 		this.cast = cast;
 	}
-*/
+
 }

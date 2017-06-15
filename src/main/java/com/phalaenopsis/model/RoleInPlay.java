@@ -25,14 +25,14 @@ public class RoleInPlay {
 	private Gender gender;
 	private String description;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false)
 	@JsonBackReference
 	private User user;
 	
 	@Column(name = "user_id", insertable = false, updatable = false)
 	private Long userId;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)	
+	@ManyToOne(optional = false)	
 	@JsonBackReference
 	private Play play;
 	
