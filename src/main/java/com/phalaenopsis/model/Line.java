@@ -1,5 +1,6 @@
 package com.phalaenopsis.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,8 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Line {
@@ -17,17 +21,23 @@ public class Line {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JsonBackReference
 	private Scene scene;
 	
 	@Column(name = "scene_id", insertable = false, updatable = false)
 	private Long sceneId;
 	
-	@Column(nullable=false)
-	private String text; 
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JsonBackReference
+	private RoleInPlay roleInPlay;
 	
-	private String audioURL = null;
+	@Column(nullable=false)
+	private String text;
+	
+	@OneToOne(mappedBy = "line", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonManagedReference
+	private Voice voice;
 
 	private Long ordinal;
 
@@ -61,14 +71,14 @@ public class Line {
 
 	public void setText(String text) {
 		this.text = text;
+	}	
+
+	public Voice getVoice() {
+		return voice;
 	}
 
-	public String getAudioURL() {
-		return audioURL;
-	}
-
-	public void setAudioURL(String audioURL) {
-		this.audioURL = audioURL;
+	public void setVoice(Voice voice) {
+		this.voice = voice;
 	}
 
 	public Long getSceneId() {
@@ -77,6 +87,14 @@ public class Line {
 
 	public void setSceneId(Long sceneId) {
 		this.sceneId = sceneId;
+	}
+
+	public RoleInPlay getRoleInPlay() {
+		return roleInPlay;
+	}
+
+	public void setRoleInPlay(RoleInPlay roleInPlay) {
+		this.roleInPlay = roleInPlay;
 	}
 
 }

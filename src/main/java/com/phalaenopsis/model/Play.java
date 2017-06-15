@@ -5,10 +5,15 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -20,8 +25,8 @@ public class Play {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)	
 	private Long id;
-
-	@OneToMany(mappedBy = "play", cascade = CascadeType.ALL)
+	
+	@OneToMany(mappedBy = "play", cascade = CascadeType.ALL)	
 	@JsonManagedReference
 	@JsonView(View.Play.class)
 	private List<Scene> scenes;
@@ -32,7 +37,10 @@ public class Play {
 	private String stillUrl;
 	@JsonView(View.PlayInfo.class)
 	private String extract;
-
+	/*
+	@OneToMany(mappedBy = "play", cascade = CascadeType.ALL)	
+	private List<RoleInPlay> cast;
+	*/
 	public Long getId() {
 		return id;
 	}
@@ -72,5 +80,13 @@ public class Play {
 	public void setExtract(String extract) {
 		this.extract = extract;
 	}
+/*
+	public List<RoleInPlay> getCast() {
+		return cast;
+	}
 
+	public void setCast(List<RoleInPlay> cast) {
+		this.cast = cast;
+	}
+*/
 }

@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -22,21 +23,21 @@ public class Scene {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)	
 	@JsonBackReference
 	private Play play;
 
 	@Column(name = "play_id", insertable = false, updatable = false)
-	private Long playId;
+	private Long playId;	
 	
-	@OneToMany(mappedBy = "scene", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private List<Line> lines;
 
 	private String name;
 
 	private Long ordinal;
-
+	
 	public Long getId() {
 		return id;
 	}
