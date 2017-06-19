@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Line {
@@ -25,6 +26,7 @@ public class Line {
 	@JsonBackReference
 	private Scene scene;
 	
+	@JsonProperty("scene_id")
 	@Column(name = "scene_id", insertable = false, updatable = false)
 	private Long sceneId;
 	
@@ -32,13 +34,20 @@ public class Line {
 	@JsonBackReference
 	private RoleInPlay roleInPlay;
 	
+	@JsonProperty("role_id")
+	@Column(name = "role_in_play_id", insertable = false, updatable = false)
+	private Long roleInPlayId;
+	
 	@Column(nullable=false)
 	private String text;
 	
+	@JsonProperty("audio_url")
+	private String audioURL;
+	/*
 	@OneToOne(mappedBy = "line", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private Voice voice;
-
+	*/
 	private Long ordinal;
 
 	public Long getId() {
@@ -72,7 +81,7 @@ public class Line {
 	public void setText(String text) {
 		this.text = text;
 	}	
-
+/*
 	public Voice getVoice() {
 		return voice;
 	}
@@ -80,7 +89,7 @@ public class Line {
 	public void setVoice(Voice voice) {
 		this.voice = voice;
 	}
-
+*/
 	public Long getSceneId() {
 		return sceneId;
 	}
@@ -95,6 +104,22 @@ public class Line {
 
 	public void setRoleInPlay(RoleInPlay roleInPlay) {
 		this.roleInPlay = roleInPlay;
+	}
+
+	public Long getRoleInPlayId() {
+		return roleInPlayId;
+	}
+
+	public void setRoleInPlayId(Long roleInPlayId) {
+		this.roleInPlayId = roleInPlayId;
+	}
+
+	public String getAudioURL() {
+		return audioURL;
+	}
+
+	public void setAudioURL(String audioURL) {
+		this.audioURL = audioURL;
 	}
 
 }

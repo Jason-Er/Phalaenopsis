@@ -16,6 +16,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.phalaenopsis.model.label.View;
 
@@ -37,7 +38,8 @@ public class Play {
 	private List<Scene> scenes;
 	
 	@Column(nullable=false)
-	private String name;
+	private String name;	
+	@JsonProperty("still_url")
 	@JsonView(View.PlayInfo.class)
 	private String stillUrl;
 	@JsonView(View.PlayInfo.class)

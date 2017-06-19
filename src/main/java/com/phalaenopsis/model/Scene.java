@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Scene {
@@ -27,6 +28,7 @@ public class Scene {
 	@JsonBackReference
 	private Play play;
 
+	@JsonProperty("play_id")
 	@Column(name = "play_id", insertable = false, updatable = false)
 	private Long playId;	
 	

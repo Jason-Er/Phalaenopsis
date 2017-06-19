@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class RoleInPlay {
@@ -28,14 +29,14 @@ public class RoleInPlay {
 	@ManyToOne(optional = false)
 	@JsonBackReference
 	private User user;
-	
+	@JsonProperty("user_id")
 	@Column(name = "user_id", insertable = false, updatable = false)
 	private Long userId;
 	
 	@ManyToOne(optional = false)	
 	@JsonBackReference
 	private Play play;
-	
+	@JsonProperty("play_id")
 	@Column(name = "play_id", insertable = false, updatable = false)
 	private Long playId;
 	
