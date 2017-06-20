@@ -53,7 +53,7 @@ public class StorageController {
 		
 		model.addAttribute("files",
 				storageService.loadAll()
-						.map(path -> MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getFileUpload",
+						.map(path -> MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getAudioUpload",
 								"play", "1", "1", path.getFileName().toString()).build().toString())
 						.collect(Collectors.toList()));
 
@@ -64,7 +64,7 @@ public class StorageController {
 
 	@GetMapping("/{play}/{scene}/{line}/audio/{filename:.+}")
 	@ResponseBody
-	public ResponseEntity<Resource> getFileUpload(@PathVariable String play, @PathVariable String scene,
+	public ResponseEntity<Resource> getAudioUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @PathVariable String filename) {
 		logger.info("Retrieve Single File --- Play: " + play + " Scene: " + scene + " line: "+line+" filename: " + filename);
 		
@@ -78,7 +78,7 @@ public class StorageController {
 
 	@DeleteMapping("/{play}/{scene}/{line}/audio/{filename:.+}")
 	@ResponseBody
-	public ResponseEntity<?> deleteFileUpload(@PathVariable String play, @PathVariable String scene,
+	public ResponseEntity<?> deleteAudioUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @PathVariable String filename) {
 
 		if (storageService.findAudioResource(filename, Tuple.<String, String, String> of(play, scene, line))) {
@@ -95,7 +95,7 @@ public class StorageController {
 
 	@PostMapping("/{play}/{scene}/{line}/audio")
 	@ResponseBody
-	public ResponseEntity<?> addFileUpload(@PathVariable String play, @PathVariable String scene,
+	public ResponseEntity<?> addAudioUpload(@PathVariable String play, @PathVariable String scene,
 			@PathVariable String line, @RequestParam("file") MultipartFile file) {
 		logger.info("Add a File --- Play: " + play + " Scene: " + scene + " line: "+line);
 		
@@ -108,7 +108,7 @@ public class StorageController {
 					HttpStatus.NOT_FOUND);
 		}
 		Path path = storageService.storeAudio(AuthUtil.getAuthUserName(), file, Tuple.<String, String, String> of(play, scene, line));
-		String url = MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getFileUpload", play, scene, line,
+		String url = MvcUriComponentsBuilder.fromMethodName(StorageController.class, "getAudioUpload", play, scene, line,
 				path.getFileName().toString()).build().toString();
 		UploadAudioStatus uploadAudioStatus = new UploadAudioStatus();
 		uploadAudioStatus.setPlay(play);

@@ -1,9 +1,14 @@
 package com.phalaenopsis.storage;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UploadAudioStatus {
 
+	@JsonProperty("play_name_id")
 	private String play;
+	@JsonProperty("scene_ordinal")
 	private String scene;
+	@JsonProperty("line_ordinal")
 	private String line;
 	private String url;
 
