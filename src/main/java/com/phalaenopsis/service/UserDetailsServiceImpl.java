@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ import com.phalaenopsis.model.Role;
 import com.phalaenopsis.model.User;
 import com.phalaenopsis.model.UserState;
 import com.phalaenopsis.repository.UserRepository;
+import com.phalaenopsis.security.jwt.AuthenticatedUser;
 
 @Service("customUserDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -35,6 +37,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			logger.info("User not found");
 			throw new UsernameNotFoundException("Username not found");
 		}
+		// store some user info to authentication
+		AuthenticatedUser authenticatedUser = new AuthenticatedUser(name);
+		authenticatedUser.setId(user.getId());
+		SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
 		return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(),
 				user.getState()==UserState.ACTIVE, true, true, true, getGrantedAuthorities(user));
 	}

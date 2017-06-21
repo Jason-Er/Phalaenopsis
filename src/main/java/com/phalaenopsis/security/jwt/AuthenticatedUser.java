@@ -8,9 +8,10 @@ import org.springframework.security.core.GrantedAuthority;
 public class AuthenticatedUser implements Authentication {
 
 	private String name;
+	private Long id;
 	private boolean authenticated = true;
 
-	AuthenticatedUser(String name) {
+	public AuthenticatedUser(String name) {
 		this.name = name;
 	}
 
@@ -48,4 +49,13 @@ public class AuthenticatedUser implements Authentication {
 	public String getName() {
 		return this.name;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 }

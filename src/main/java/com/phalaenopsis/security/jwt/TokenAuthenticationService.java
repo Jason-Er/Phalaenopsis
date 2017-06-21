@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 
+import com.phalaenopsis.util.Common;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -17,12 +19,13 @@ public class TokenAuthenticationService {
 	private String tokenPrefix = "Bearer";
 	private String headerString = "Authorization";
 
-	public void addAuthentication(HttpServletResponse response, String username) {
+	public void addAuthentication(HttpServletResponse response, String username, Long userId) {
 		// We generate a token now.
 		String JWT = Jwts.builder().setSubject(username)
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 		response.addHeader(headerString, tokenPrefix + " " + JWT);
+		Common.responseOutWithJson(response, username, userId);
 	}
 
 	public Authentication getAuthentication(HttpServletRequest request) {
